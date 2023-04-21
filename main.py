@@ -1,3 +1,4 @@
+# %%
 import pinecone
 
 # Connect to Pinecone
