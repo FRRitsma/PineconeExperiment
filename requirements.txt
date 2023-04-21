@@ -1,1 +1,2 @@
-pinecone-client==2.2.1
+pinecone_client==2.2.1
+pytest==7.3.1
