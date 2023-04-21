@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+*.pyd
+*.dll
+
+# Distribution / packaging
+.Python
+build/
+dist/
+egg-info/
+*.egg-info/
+*.egg
+
+# IDE-specific files
+.vscode/
+*.code-workspace
+
+# Environment variable files
+.env
+.env.*
+
+# Test reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Local environments:
+venv
