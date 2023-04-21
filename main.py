@@ -1,4 +1,3 @@
-
 import pinecone
 
 # Connect to Pinecone
@@ -20,6 +19,6 @@ results = index.query(queries=[query_vector], top_k=10)
 print("Similarity search results:")
 for result in results[0]:
     print(result.id, result.score)
-    
+
 # Close the connection to Pinecone
 pinecone.deinit()
