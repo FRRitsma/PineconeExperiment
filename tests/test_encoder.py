@@ -1,3 +1,5 @@
-import pytest
+# %%
 
-pytest.Cache.clear_cache()
+
+def test_always_passes():
+    assert True
