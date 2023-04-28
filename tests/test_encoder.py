@@ -1,6 +1,7 @@
 # %%
 
 from embedding.encode_img import embed_image, load_image_from_file
+import os
 
 
 def test_always_passes():
@@ -8,6 +9,8 @@ def test_always_passes():
 
 
 def test_embed_image():
-    img = load_image_from_file("input.jpg")
+    here = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(here, "input.jpg")
+    img = load_image_from_file(filename)
     embed_image(img)
     assert True
