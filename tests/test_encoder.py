@@ -12,7 +12,7 @@ def test_always_passes():
     assert True
 
 
-def test_load_image_from_File():
+def test_load_image_from_file():
     filename = os.path.join(here, "input.jpg")
     img = load_image_from_file(filename)
     assert isinstance(img, JpegImageFile)
