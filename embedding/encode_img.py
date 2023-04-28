@@ -5,7 +5,12 @@ import torchvision.transforms as transforms
 from PIL import Image
 
 
-def embed_image():
+def load_image_from_file(image_name: str):
+    img = Image.open(image_name)
+    return img
+
+
+def embed_image(img):
     # Load the ResNet-101 model
     resnet = models.resnet101(pretrained=True)
 
@@ -14,7 +19,6 @@ def embed_image():
     resnet = torch.nn.Sequential(*modules)
 
     # Load the input image and preprocess it
-    img = Image.open("input.jpg")
     transform = transforms.Compose(
         [
             transforms.Resize(256),
