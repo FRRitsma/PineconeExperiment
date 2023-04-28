@@ -31,3 +31,6 @@ htmlcov/
 
 # Local environments:
 venv
+
+# Generated embeddings:
+embedding.pt
