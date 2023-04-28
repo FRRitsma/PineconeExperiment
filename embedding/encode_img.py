@@ -3,6 +3,7 @@ import torch
 import torchvision.models as models
 import torchvision.transforms as transforms
 from PIL import Image
+from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
 
 
 def load_image_from_file(image_name: str):
@@ -10,7 +11,7 @@ def load_image_from_file(image_name: str):
     return img
 
 
-def embed_image(img):
+def embed_image(img: JpegImageFile):
     # Load the ResNet-101 model
     resnet = models.resnet101(pretrained=True)
 
