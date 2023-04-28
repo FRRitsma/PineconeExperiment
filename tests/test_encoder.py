@@ -8,6 +8,6 @@ def test_always_passes():
 
 
 def test_embed_image():
-    img = load_image_from_file("tests\\input.jpg")
+    img = load_image_from_file("input.jpg")
     embed_image(img)
     assert True
