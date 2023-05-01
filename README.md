@@ -1,2 +1,2 @@
 # Weaviate
-Experimentation with the weaviate database.
+Experimentation with the pinecone database, confusingly. Should change name of repository
