@@ -6,7 +6,7 @@ on:
       - main # Change this to the name of your main branch
 
 jobs:
-  pre-commit:
+  pre-commit and test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,30 +18,31 @@ jobs:
       - name: Pip install pre-commit
         run: |
           python -m pip install --upgrade pip
-          pip install pytest
           pip install pre-commit
+      - name: Pip install all requirements
+        run: pip install -r requirements.txt
       - name: Run pre-commit
         run: pre-commit run --all-files
 
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]
+  # test:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       python-version: ["3.10"]
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v3
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+  #   - name: Set up Python ${{ matrix.python-version }}
+  #     uses: actions/setup-python@v3
+  #     with:
+  #       python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+  #   - name: Install dependencies
+  #     run: |
+  #       python -m pip install --upgrade pip
+  #       pip install -r requirements.txt
 
-    - name: Run tests
-      run: python -m pytest
+  #   - name: Run tests
+  #     run: python -m pytest
