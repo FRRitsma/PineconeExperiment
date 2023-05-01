@@ -54,7 +54,7 @@ repos:
 # #     -   id: tidy
 # #         args: [--clean]
 
-# -   repo: https://github.com/asottile/reorder-python-imports
-#     rev: v2.6.0
-#     hooks:
-#     -   id: reorder-python-imports
+-   repo: https://github.com/asottile/reorder-python-imports
+    rev: v2.6.0
+    hooks:
+    -   id: reorder-python-imports
