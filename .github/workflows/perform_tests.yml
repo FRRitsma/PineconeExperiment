@@ -6,7 +6,7 @@ on:
       - main # Change this to the name of your main branch
 
 jobs:
-  pre-commit and test:
+  pre-commit_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
