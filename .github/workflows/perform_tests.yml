@@ -24,6 +24,8 @@ jobs:
       - name: Run pre-commit
         run: pre-commit run --all-files
 
+
+# Tests have been included in the precommit, and are therefore no longer necessary to include separately
   # test:
   #   runs-on: ubuntu-latest
   #   strategy:

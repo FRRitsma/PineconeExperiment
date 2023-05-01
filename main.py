@@ -6,6 +6,15 @@ from settings import DIMENSION
 from settings import ENVIRONMENT
 from settings import INDEX_NAME
 
+# pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
+
+
+def find_out():
+    print(pinecone.list_indexes())
+
+
+# %%
+
 # Connect to Pinecone
 pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
 
@@ -29,5 +38,3 @@ index.upsert(
 # Perform the similarity search
 query_vector = [0.155] * DIMENSION
 results = index.query(queries=[query_vector], top_k=10)
-
-pinecone.deinit()
