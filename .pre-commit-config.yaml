@@ -48,11 +48,10 @@ repos:
         args: [--in-place, --aggressive, --aggressive, --max-line-length=120]
 
 
-# -   repo: https://github.com/pre-commit/mirrors-tidy
-#     rev: v5.10.0
+# - repo: https://github.com/pre-commit/mirrors-tidy
+#     rev: "master"
 #     hooks:
 #     -   id: tidy
-#         args: [--clean]
 
 -   repo: https://github.com/asottile/reorder-python-imports
     rev: v2.6.0
