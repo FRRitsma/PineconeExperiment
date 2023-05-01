@@ -24,9 +24,9 @@ repos:
     -   id: debug-statements
 #     -   id: check-added-large-files
 #         args: [--maxkb=100]
-#     -   id: check-merge-conflict
-#     -   id: check-added-large-files
-#     -   id: mixed-line-ending
+    -   id: check-merge-conflict
+    -   id: check-added-large-files
+    -   id: mixed-line-ending
 #         args: [--fix=lf]
 #         files: '\.sh$|^Dockerfile$|^Makefile$'
 #     -   id: check-ast
