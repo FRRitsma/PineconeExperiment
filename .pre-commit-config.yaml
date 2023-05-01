@@ -27,14 +27,14 @@ repos:
     -   id: check-merge-conflict
     -   id: check-added-large-files
     -   id: mixed-line-ending
-#         args: [--fix=lf]
-#         files: '\.sh$|^Dockerfile$|^Makefile$'
-#     -   id: check-ast
-#     -   id: check-builtin-literals
-#     -   id: check-docstring-first
-#     -   id: check-toml
-#         args: ['--unsafe']
-#     -   id: name-tests-test
+        args: [--fix=lf]
+        files: '\.sh$|^Dockerfile$|^Makefile$'
+    -   id: check-ast
+    -   id: check-builtin-literals
+    -   id: check-docstring-first
+    -   id: check-toml
+        args: ['--unsafe']
+    -   id: name-tests-test
 
 # -   repo: https://github.com/PyCQA/isort
 #     rev: 5.9.3
