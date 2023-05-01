@@ -36,10 +36,10 @@ repos:
         args: ['--unsafe']
     -   id: name-tests-test
 
-# -   repo: https://github.com/PyCQA/isort
-#     rev: 5.9.3
-#     hooks:
-#     -   id: isort
+-   repo: https://github.com/PyCQA/isort
+    rev: 5.11.5
+    hooks:
+    -   id: isort
 
 -   repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v1.5.7
@@ -47,9 +47,9 @@ repos:
     -   id: autopep8
         args: [--in-place, --aggressive, --aggressive, --max-line-length=120]
 
-
-# - repo: https://github.com/pre-commit/mirrors-tidy
-#     rev: "master"
+# Broken hook:
+# -   repo: https://github.com/htacg/tidy-html5
+#     rev: master
 #     hooks:
 #     -   id: tidy
 
