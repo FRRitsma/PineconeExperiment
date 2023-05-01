@@ -10,10 +10,6 @@ from src.embedding.encode_img import load_image_from_file
 here = os.path.dirname(os.path.abspath(__file__))
 
 
-def test_always_passes():
-    assert True
-
-
 def test_load_image_from_file():
     filename = os.path.join(here, "input.jpg")
     img = load_image_from_file(filename)
