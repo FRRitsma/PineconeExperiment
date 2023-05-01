@@ -1,7 +1,10 @@
 # %%
 import pinecone
-from settings import API_KEY, ENVIRONMENT, INDEX_NAME, DIMENSION
 
+from settings import API_KEY
+from settings import DIMENSION
+from settings import ENVIRONMENT
+from settings import INDEX_NAME
 
 # Connect to Pinecone
 pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)

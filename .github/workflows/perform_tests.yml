@@ -1,6 +1,6 @@
 name: Python Test
 
-on: 
+on:
   push:
     branches:
       - main # Change this to the name of your main branch
