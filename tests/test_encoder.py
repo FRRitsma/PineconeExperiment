@@ -3,8 +3,8 @@ import os
 
 from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
 
-from embedding.encode_img import embed_image
-from embedding.encode_img import load_image_from_file
+from src.embedding.encode_img import embed_image
+from src.embedding.encode_img import load_image_from_file
 
 # This is needed to load files in the directory correctly:
 here = os.path.dirname(os.path.abspath(__file__))

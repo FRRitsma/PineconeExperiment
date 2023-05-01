@@ -34,3 +34,6 @@ venv
 
 # Generated embeddings:
 embedding.pt
+
+# Test caches:
+.*_cache

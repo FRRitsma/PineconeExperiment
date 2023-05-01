@@ -35,7 +35,7 @@ repos:
     -   id: check-toml
         args: ['--unsafe']
 
-# Conflicts with autopep8
+# Conflicts with autopep8:
 # -   repo: https://github.com/PyCQA/isort
 #     rev: 5.11.5
 #     hooks:
