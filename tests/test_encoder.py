@@ -10,17 +10,17 @@ from embedding.encode_img import load_image_from_file
 here = os.path.dirname(os.path.abspath(__file__))
 
 
-def always_passes_test():
+def test_always_passes():
     assert True
 
 
-def load_image_from_file_test():
+def test_load_image_from_file():
     filename = os.path.join(here, "input.jpg")
     img = load_image_from_file(filename)
     assert isinstance(img, JpegImageFile)
 
 
-def embed_image_test():
+def test_embed_image():
     filename = os.path.join(here, "input.jpg")
     img = load_image_from_file(filename)
     embed_image(img)
