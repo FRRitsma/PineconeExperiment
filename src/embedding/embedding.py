@@ -14,11 +14,25 @@ if __name__ == "__main__":
 
 
 def load_image_from_file(image_name: str | Path) -> JpegImageFile:
+    """
+    Returns a locally stored image as a PIL image
+
+    Args:
+        image_name (str | Path):
+
+    Returns:
+        JpegImageFile:
+    """
     img = Image.open(image_name)
     return img
 
 
 class Embedder:
+    """
+    For embedding a PIL image as a torch.Tensor.
+    Implemented as class to prevent continuous reloading of the sizeable resnet model
+    """
+
     def __init__(self):
         resnet = models.resnet101(pretrained=True)
         modules = list(resnet.children())[:-1]
@@ -29,25 +43,8 @@ class Embedder:
         return self.resnet(img.unsqueeze(0))
 
 
-def embed_image(img: JpegImageFile):
-    # Load the ResNet-101 model
-    # TODO: Loading model should not be done inside function
-    resnet = models.resnet101(pretrained=True)
-
-    # Remove the last layer or two of linear layers coupled with softmax activation for classification
-    modules = list(resnet.children())[:-1]
-    resnet = torch.nn.Sequential(*modules)
-
-    # Transform image:
-    img = image_transform(img)
-
-    # Pass the preprocessed image through the ResNet-101 model to obtain its image embedding
-    embedding = resnet(img.unsqueeze(0))
-
-    return embedding
-
-
 def image_transform(img: JpegImageFile) -> torch.Tensor:
+
     transform = transforms.Compose(
         [
             # TODO: Verify if 256 is indeed the input size for resnet101
@@ -60,16 +57,14 @@ def image_transform(img: JpegImageFile) -> torch.Tensor:
     return transform(img)
 
 
-def visualize_transform(img: torch.Tensor) -> None:
-    plt.imshow(img.permute(1, 2, 0))
-
-
 if __name__ == "__main__":
+    # Function used only for development:
+    def visualize_transform(img: torch.Tensor) -> None:
+        plt.imshow(img.permute(1, 2, 0))
 
+    # Random development functions:
     base_directory = Path.cwd().parent.parent
     image_path = Path.joinpath(base_directory, "tests", "input.jpg")
     img = load_image_from_file(image_path)
     img_trans = image_transform(img)
     visualize_transform(img_trans)
-    #    visualize_transform(img)
-    print("yo")
