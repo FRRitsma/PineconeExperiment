@@ -45,11 +45,11 @@ class Embedder:
 
 def image_transform(img: JpegImageFile) -> torch.Tensor:
 
+    image_resize: int = 256  # Reported input size for resnet101 is 224
     transform = transforms.Compose(
         [
-            # TODO: Verify if 256 is indeed the input size for resnet101
-            transforms.Resize(256),
-            transforms.CenterCrop(256),
+            transforms.Resize(image_resize),
+            transforms.CenterCrop(image_resize),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
