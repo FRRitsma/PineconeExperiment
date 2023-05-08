@@ -37,3 +37,6 @@ embedding.pt
 
 # Test caches:
 .*_cache
+
+# Large files:
+large_files
