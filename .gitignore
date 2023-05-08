@@ -39,4 +39,5 @@ embedding.pt
 .*_cache
 
 # Large files:
-large_files
+large_files/imagenette2
+large_files/imagenette2.tgz
