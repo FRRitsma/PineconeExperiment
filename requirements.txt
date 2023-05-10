@@ -1,5 +1,0 @@
-pinecone_client==2.2.1
-torch==1.13.0
-torchvision==0.14.0
-pytest==7.3.1
-pre-commit==3.2.2

@@ -6,6 +6,7 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
+from torchvision.models import ResNet101_Weights
 
 # TODO: Fix PIL image types. Currently only accepts jpeg
 # Dev only modules:
@@ -34,7 +35,7 @@ class Embedder:
     """
 
     def __init__(self):
-        resnet = models.resnet101(pretrained=True)
+        resnet = models.resnet101(weights=ResNet101_Weights.DEFAULT)
         modules = list(resnet.children())[:-1]
         self.resnet = torch.nn.Sequential(*modules)
 

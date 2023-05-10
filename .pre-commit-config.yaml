@@ -33,7 +33,6 @@ repos:
     -   id: check-builtin-literals
     -   id: check-docstring-first
     -   id: check-toml
-        args: ['--unsafe']
 
 # Conflicts with autopep8:
 # -   repo: https://github.com/PyCQA/isort
