@@ -9,12 +9,12 @@ from pathlib import Path
 from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile
 
-here: Path = Path(os.path.dirname(os.path.abspath(__file__)))
+here: Path = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent
 
 
 class SetPath(enumerate):
-    train: Path = Path.joinpath(here, "imagenette2", "train")
-    val: Path = Path.joinpath(here, "imagenette2", "val")
+    train: Path = Path.joinpath(here, "data", "imagenette2", "train")
+    val: Path = Path.joinpath(here, "data", "imagenette2", "val")
 
 
 def extract_images(n_labels: int, n_images: int, setpath: Path) -> list[dict]:
