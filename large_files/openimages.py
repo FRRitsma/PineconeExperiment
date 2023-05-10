@@ -2,7 +2,6 @@
 """
 Loading train images bundled with their respective labels
 """
-# TODO: Add notation of specific file name
 import os
 from itertools import product
 from pathlib import Path
@@ -10,32 +9,35 @@ from pathlib import Path
 from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile
 
-
-class setchoicestr(str):
-    pass
+here: Path = Path(os.path.dirname(os.path.abspath(__file__)))
 
 
-class SetChoice(enumerate):
-    train: setchoicestr = setchoicestr("train")
-    val: setchoicestr = setchoicestr("val")
+class SetPath(enumerate):
+    train: Path = Path.joinpath(here, "imagenette2", "train")
+    val: Path = Path.joinpath(here, "imagenette2", "val")
 
 
-def extract_images(n_labels: int, n_images: int, set_type: setchoicestr) -> list[dict]:
-    here: Path = Path(os.path.dirname(os.path.abspath(__file__)))
-    path_to_labels: Path = Path.joinpath(
-        here,
-        "imagenette2",
-        set_type,
-    )
+def extract_images(n_labels: int, n_images: int, setpath: Path) -> list[dict]:
+    """
+    Function for extracting images and metadata from the "imagenette2" dataset.
 
-    all_label_directories: list[str] = os.listdir(path_to_labels)
+    Args:
+        n_labels (int): Amount of labels to be used
+        n_images (int): Amount of images to be selected for each label
+        setpath (Path): Either "train" or "val"
+
+    Returns:
+        list[dict]: A list of images with associated metadata bundled in a dictionary
+    """
+
+    all_label_directories: list[str] = os.listdir(setpath)
     selected_label_directories: list[str] = all_label_directories[
         : min(len(all_label_directories), n_labels)
     ]
 
     output_images_with_metadata: list[dict] = []
     for label, index in product(selected_label_directories, range(n_images)):
-        full_path_directory: Path = Path.joinpath(path_to_labels, label)
+        full_path_directory: Path = Path.joinpath(setpath, label)
         image_path: str = os.listdir(full_path_directory)[index]
         image: JpegImageFile = Image.open(
             Path.joinpath(full_path_directory, image_path)
