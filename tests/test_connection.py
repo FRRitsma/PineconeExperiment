@@ -12,5 +12,6 @@ def test_incorrect_api_key():
         pinecone.create_index("NONSENSE", dimension=8, metric="euclidean")
 
 
+# TODO: Try to interact with database
 def test_connection():
     pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
