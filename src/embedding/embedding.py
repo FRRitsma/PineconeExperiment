@@ -43,12 +43,13 @@ class Embedder:
 
 
 def image_transform(img: Union[JpegImageFile, PngImageFile]) -> torch.Tensor:
-
-    image_resize: int = 256  # Reported input size for resnet101 is 224
+    image_resize: int = 256
     transform = transforms.Compose(
         [
             transforms.Resize(image_resize),
-            transforms.CenterCrop(image_resize),
+            transforms.CenterCrop(
+                image_resize
+            ),  # TODO: Center crop seems to destroy information. Is there an alternative?
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
