@@ -1,6 +1,7 @@
 # %%
 import os
 
+import numpy as np
 import torch
 from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
 
@@ -33,7 +34,7 @@ def test_embedder_class():
     filename = os.path.join(here, "input.jpg")
     img = load_image_from_file(filename)
     embedded_image = embedder.embed(img)
-    assert isinstance(embedded_image, torch.Tensor)
+    assert isinstance(embedded_image, np.ndarray)
 
 
 def test_extract_and_embed():
@@ -46,4 +47,4 @@ def test_extract_and_embed():
     image_with_metadata = images_with_metadata[0]
     img = image_with_metadata.image
     embedded_image = embedder.embed(img)
-    assert isinstance(embedded_image, torch.Tensor)
+    assert isinstance(embedded_image, np.ndarray)

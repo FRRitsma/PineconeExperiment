@@ -1,6 +1,7 @@
 # %%
 from pathlib import Path
 
+import numpy as np
 import torch
 import torchvision.models as models
 import torchvision.transforms as transforms
@@ -37,9 +38,9 @@ class Embedder:
         modules = list(resnet.children())[:-1]
         self.resnet = torch.nn.Sequential(*modules)
 
-    def embed(self, img: JpegImageFile):
+    def embed(self, img: JpegImageFile) -> np.ndarray:
         img = image_transform(img)
-        return self.resnet(img.unsqueeze(0))
+        return self.resnet(img.unsqueeze(0)).flatten().detach().numpy()
 
 
 def image_transform(img: JpegImageFile) -> torch.Tensor:

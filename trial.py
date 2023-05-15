@@ -2,31 +2,65 @@
 # Part 1: Initialize database
 # Part 2: Fill database
 # Attach image link in metadata
+import pinecone
+
+from settings import API_KEY
+from settings import ENVIRONMENT
+from settings import INDEX_NAME
 from src.embedding.embedding import Embedder
 from src.extract.extract import extract_images_with_metadata
 from src.extract.extract import LabelPath
 
-train_images = extract_images_with_metadata(5, 5, LabelPath.train)
-val_images = extract_images_with_metadata(5, 5, LabelPath.val)
 
+N_LABELS: int = 5
+N_IMAGES: int = 10
+
+train_data = extract_images_with_metadata(N_LABELS, N_IMAGES, LabelPath.train)
 embedder = Embedder()
-embedded_image = embedder.embed(train_images[0].image)
+
+vector_dimension = len(embedder.embed(train_data[0].image))
+pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
 
 
-# def embed_images_with_metadata(image_list: list[dict]) -> list[dict]:
-#     embedded_image_list: list = []
-#     for image_with_metadata in image_list:
-#         embedded_image_with_metadata = image_with_metadata.copy()
-#         embedded_image_with_metadata["image"] = embedder.embed(
-#             embedded_image_with_metadata
-#         )
-#         embedded_image_list.append(embedded_image_with_metadata)
-#     return embedded_image_list
+def create_index_no_overwrite(index_name: str, vector_dimension: int) -> None:
+    if INDEX_NAME not in pinecone.list_indexes():
+        pinecone.create_index(index_name, vector_dimension, metric="euclidean")
 
 
-# def fill_data_base():
-#     # Commence database connection:s
-#     train_images = extract_images_with_metadata(5, 5, LabelPath.train)
+def create_index_overwrite(index_name: str, vector_dimension: int) -> None:
+    if index_name in pinecone.list_indexes():
+        pinecone.delete_index(index_name)
+    pinecone.create_index(index_name, vector_dimension, metric="euclidean")
 
-#     print(train_images)
-#     ...
+
+# TEST:
+# Can I upsert torch tensors directly?
+pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
+index = pinecone.Index(ENVIRONMENT)
+
+vector = embedder.embed(train_data[0].image)
+upsert_response = index.upsert(
+    vectors={
+        "id": "vec1",
+        "values": vector,
+    }
+)
+
+# upsert_response = index.upsert(
+#     vectors=[
+#         {
+#         'id':'vec1',
+#         'values':[0.1, 0.2, 0.3, 0.4],
+#         'metadata':{'genre': 'drama'},
+#            'sparse_values':
+#            {'indices': [10, 45, 16],
+#            'values':  [0.5, 0.5, 0.2]}},
+#         {'id':'vec2',
+#         'values':[0.2, 0.3, 0.4, 0.5],
+#         'metadata':{'genre': 'action'},
+#            'sparse_values':
+#            {'indices': [15, 40, 11],
+#            'values':  [0.4, 0.5, 0.2]}}
+#     ],
+#     namespace='example-namespace'
+# )
