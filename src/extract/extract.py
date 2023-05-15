@@ -12,43 +12,52 @@ from PIL.JpegImagePlugin import JpegImageFile
 here: Path = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent
 
 
-class SetPath(enumerate):
+class LabelPath:
     train: Path = Path.joinpath(here, "data", "imagenette2", "train")
     val: Path = Path.joinpath(here, "data", "imagenette2", "val")
 
 
-def extract_images(n_labels: int, n_images: int, setpath: Path) -> list[dict]:
+class ImageWithMetadata:
+    image: JpegImageFile
+    image_path: Path
+    label: str
+
+    def __init__(self, image_path: Path):
+        self.image_path = image_path
+        self.image = Image.open(image_path)
+        self.label = image_path.parent.name
+
+
+def select_label_directories(labels_path: Path, n_labels: int) -> list[Path]:
+    all_label_directories: list[str] = os.listdir(labels_path)
+    selected_label_directories: list[str] = all_label_directories[:n_labels]
+    selected_label_directories_full_path = [
+        Path.joinpath(labels_path, i) for i in selected_label_directories
+    ]
+    return selected_label_directories_full_path
+
+
+def select_images(label_directories: list, n_images: int) -> list[Path]:
+    images_full_path: list = []
+    for label_directory, i in product(label_directories, range(n_images)):
+        all_images_in_label_directory = os.listdir(label_directory)
+        images_full_path.append(
+            Path.joinpath(label_directory, all_images_in_label_directory[i])
+        )
+    return images_full_path
+
+
+def extract_images_with_metadata(
+    n_labels: int, n_images: int, train_or_val_path: Path
+) -> list[ImageWithMetadata]:
     """
-    Function for extracting images and metadata from the "imagenette2" dataset.
-
-    Args:
-        n_labels (int): Amount of labels to be used
-        n_images (int): Amount of images to be selected for each label
-        setpath (Path): Either "train" or "val"
-
-    Returns:
-        list[dict]: A list of images with associated metadata bundled in a dictionary
+    Extracting images and metadata from the "imagenette2" dataset, as a list of "ImageWithMetaData" classes
     """
 
-    all_label_directories: list[str] = os.listdir(setpath)
-    selected_label_directories: list[str] = all_label_directories[
-        : min(len(all_label_directories), n_labels)
+    label_directories = select_label_directories(train_or_val_path, n_labels)
+    image_paths = select_images(label_directories, n_images)
+    images_with_metadata: list[ImageWithMetadata] = [
+        ImageWithMetadata(path) for path in image_paths
     ]
 
-    output_images_with_metadata: list[dict] = []
-    for label, index in product(selected_label_directories, range(n_images)):
-        full_path_directory: Path = Path.joinpath(setpath, label)
-        image_path: str = os.listdir(full_path_directory)[index]
-        image: JpegImageFile = Image.open(
-            Path.joinpath(full_path_directory, image_path)
-        )
-
-        image_with_meta_data = {
-            "image_name": image_path,
-            "label": label,
-            "image": image,
-        }
-
-        output_images_with_metadata.append(image_with_meta_data)
-
-    return output_images_with_metadata
+    return images_with_metadata

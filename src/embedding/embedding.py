@@ -10,8 +10,6 @@ from torchvision.models import ResNet101_Weights
 
 # TODO: Fix PIL image types. Currently only accepts jpeg
 # Dev only modules:
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
 
 
 def load_image_from_file(image_name: str | Path) -> JpegImageFile:
@@ -60,12 +58,12 @@ def image_transform(img: JpegImageFile) -> torch.Tensor:
 
 if __name__ == "__main__":
     # Function used only for development:
-    def visualize_transform(img: torch.Tensor) -> None:
-        plt.imshow(img.permute(1, 2, 0))
+    # def visualize_transform(img: torch.Tensor) -> None:
+    #     plt.imshow(img.permute(1, 2, 0))
 
     # Random development functions:
     base_directory = Path.cwd().parent.parent
     image_path = Path.joinpath(base_directory, "tests", "input.jpg")
     img = load_image_from_file(image_path)
     img_trans = image_transform(img)
-    visualize_transform(img_trans)
+    # visualize_transform(img_trans)
