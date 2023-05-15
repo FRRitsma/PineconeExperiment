@@ -5,9 +5,11 @@ Loading train images bundled with their respective labels
 import os
 from itertools import product
 from pathlib import Path
+from typing import Union
 
 from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile
+from PIL.PngImagePlugin import PngImageFile
 
 here: Path = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent
 
@@ -18,7 +20,7 @@ class LabelPath:
 
 
 class ImageWithMetadata:
-    image: JpegImageFile
+    image: Union[JpegImageFile, PngImageFile]
     image_path: Path
     label: str
 

@@ -33,17 +33,29 @@ def create_index_overwrite(index_name: str, vector_dimension: int) -> None:
     pinecone.create_index(index_name, vector_dimension, metric="euclidean")
 
 
+# %%
+
 # TEST:
 # Can I upsert torch tensors directly?
-pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
-index = pinecone.Index(ENVIRONMENT)
+index = pinecone.Index(INDEX_NAME)
+# index.upsert([
+#     ("A", [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]),
+#     ("B", [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]),
+#     ("C", [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]),
+#     ("D", [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]),
+#     ("E", [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
+# ])
 
 vector = embedder.embed(train_data[0].image)
+vector_np = vector.detach().numpy()
+# %%
 upsert_response = index.upsert(
-    vectors={
-        "id": "vec1",
-        "values": vector,
-    }
+    vectors=[
+        {
+            "id": "vec1",
+            "values": vector_np,
+        }
+    ]
 )
 
 # upsert_response = index.upsert(

@@ -1,5 +1,6 @@
 # %%
 from pathlib import Path
+from typing import Union
 
 import numpy as np
 import torch
@@ -7,13 +8,11 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
+from PIL.PngImagePlugin import PngImageFile
 from torchvision.models import ResNet101_Weights
 
-# TODO: Fix PIL image types. Currently only accepts jpeg
-# Dev only modules:
 
-
-def load_image_from_file(image_name: str | Path) -> JpegImageFile:
+def load_image_from_file(image_name: str | Path) -> Union[JpegImageFile, PngImageFile]:
     """
     Returns a locally stored image as a PIL image
 
@@ -38,12 +37,12 @@ class Embedder:
         modules = list(resnet.children())[:-1]
         self.resnet = torch.nn.Sequential(*modules)
 
-    def embed(self, img: JpegImageFile) -> np.ndarray:
+    def embed(self, img: Union[JpegImageFile, PngImageFile]) -> np.ndarray:
         img = image_transform(img)
         return self.resnet(img.unsqueeze(0)).flatten().detach().numpy()
 
 
-def image_transform(img: JpegImageFile) -> torch.Tensor:
+def image_transform(img: Union[JpegImageFile, PngImageFile]) -> torch.Tensor:
 
     image_resize: int = 256  # Reported input size for resnet101 is 224
     transform = transforms.Compose(
@@ -55,16 +54,3 @@ def image_transform(img: JpegImageFile) -> torch.Tensor:
         ]
     )
     return transform(img)
-
-
-if __name__ == "__main__":
-    # Function used only for development:
-    # def visualize_transform(img: torch.Tensor) -> None:
-    #     plt.imshow(img.permute(1, 2, 0))
-
-    # Random development functions:
-    base_directory = Path.cwd().parent.parent
-    image_path = Path.joinpath(base_directory, "tests", "input.jpg")
-    img = load_image_from_file(image_path)
-    img_trans = image_transform(img)
-    # visualize_transform(img_trans)
