@@ -1,4 +1,3 @@
-# %%
 from pathlib import Path
 from typing import Union
 
@@ -42,16 +41,33 @@ class Embedder:
         return self.resnet(img.unsqueeze(0)).flatten().detach().numpy()
 
 
+def image_transform_pad_to_square(
+    img: Union[JpegImageFile, PngImageFile] | torch.Tensor
+):
+    size = max(np.array(img).shape)
+    width, height = img.size
+    delta_w = size - width
+    delta_h = size - height
+    left = delta_w // 2
+    right = delta_w - left
+    top = delta_h // 2
+    bottom = delta_h - top
+    transform = transforms.Pad(padding=(left, top, right, bottom))
+    return transform
+
+
 def image_transform(img: Union[JpegImageFile, PngImageFile]) -> torch.Tensor:
+
     image_resize: int = 256
-    transform = transforms.Compose(
+    img = image_transform_pad_to_square(img)(img)
+
+    transform_final = transforms.Compose(
         [
             transforms.Resize(image_resize),
-            transforms.CenterCrop(
-                image_resize
-            ),  # TODO: Center crop seems to destroy information. Is there an alternative?
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            # TODO: this transform could improve results, but breaks on some images. Why though?
+            # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
     )
-    return transform(img)
+
+    return transform_final(img)

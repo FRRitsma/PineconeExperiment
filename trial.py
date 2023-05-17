@@ -2,6 +2,7 @@
 # Part 1: Initialize database
 # Part 2: Fill database
 # Attach image link in metadata
+import numpy as np
 import pinecone
 
 from settings import API_KEY
@@ -38,22 +39,44 @@ index = pinecone.Index(INDEX_NAME)
 vector = embedder.embed(train_data[0].image)
 
 
-def metadata_to_dict(image_with_metadata: ImageWithMetadata) -> dict[str, str]:
+def process_images_with_metadata_list(
+    images_with_metadata_list: list[ImageWithMetadata],
+) -> list[tuple]:
+    embedder = Embedder()
+    return [
+        (
+            vector_from_image_with_metadata(iwm, embedder),
+            dictionary_from_image_with_metadata(iwm),
+        )
+        for iwm in images_with_metadata_list
+    ]
+
+
+def vector_from_image_with_metadata(
+    image_with_metadata: ImageWithMetadata, embedder: Embedder
+) -> np.ndarray:
+    return embedder.embed(image_with_metadata.image)
+
+
+def dictionary_from_image_with_metadata(
+    image_with_metadata: ImageWithMetadata,
+) -> dict[str, str]:
     return {
         "image_path": str(image_with_metadata.image_path),
         "label": image_with_metadata.label,
     }
 
 
+testeroni = process_images_with_metadata_list(train_data)
 # %%
-upsert_response = index.upsert(
-    vectors=[
-        {
-            "id": "vec1",
-            "values": vector,
-        }
-    ]
-)
+# upsert_response = index.upsert(
+#     vectors=[
+#         {
+#             "id": "vec1",
+#             "values": vector,
+#         }
+#     ]
+# )
 
 # upsert_response = index.upsert(
 #     vectors=[
