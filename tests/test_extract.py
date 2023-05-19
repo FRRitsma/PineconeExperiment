@@ -52,6 +52,6 @@ def test_extract_images_with_metadata_list_correct_length_for_more_labels_than_e
     path,
 ):
     n_labels: int = 20
-    n_images: int = 7
+    n_images: int = 50
     images_with_metadata = extract_images_with_metadata(n_labels, n_images, path)
     assert len(images_with_metadata) == 10 * n_images

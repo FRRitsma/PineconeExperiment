@@ -67,7 +67,7 @@ def dictionary_from_image_with_metadata(
     }
 
 
-testeroni = process_images_with_metadata_list(train_data)
+# testeroni = process_images_with_metadata_list(train_data)
 # %%
 # upsert_response = index.upsert(
 #     vectors=[
