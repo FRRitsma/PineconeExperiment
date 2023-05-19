@@ -3,11 +3,9 @@
 Loading train images bundled with their respective labels
 """
 import os
-from itertools import product
 from pathlib import Path
 from typing import Union
 
-from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile
 from PIL.PngImagePlugin import PngImageFile
 
@@ -26,7 +24,6 @@ class ImageWithMetadata:
 
     def __init__(self, image_path: Path):
         self.image_path = image_path
-        self.image = Image.open(image_path)
         self.label = image_path.parent.name
 
 
@@ -41,11 +38,10 @@ def select_label_directories(labels_path: Path, n_labels: int) -> list[Path]:
 
 def select_images(label_directories: list, n_images: int) -> list[Path]:
     images_full_path: list = []
-    for label_directory, i in product(label_directories, range(n_images)):
+    for label_directory in label_directories:
         all_images_in_label_directory = os.listdir(label_directory)
-        images_full_path.append(
-            Path.joinpath(label_directory, all_images_in_label_directory[i])
-        )
+        for image_path in all_images_in_label_directory[:n_images]:
+            images_full_path.append(Path.joinpath(label_directory, image_path))
     return images_full_path
 
 
