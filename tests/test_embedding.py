@@ -56,7 +56,7 @@ def test_image_transform_to_tensor_and_resize(single_test_image):
 def test_image_transform_one_channel_to_three_channels():
     # TODO: Fix this hardcode
     path = Path(
-        """c://Users//frrit//OneDrive//Desktop//Weaviate//Weaviate//data
+        """c://Users//frrit//OneDrive//Desktop//Weaviate//Weaviate//data\
         //imagenette2//train//n02102040//n02102040_1408.JPEG"""
     )
     img = Image.open(path)
