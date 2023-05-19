@@ -68,10 +68,8 @@ def test_image_transform_one_channel_to_three_channels():
     assert min(img_after_transform.shape) == 3
 
 
-def test_transform_function():
-    filename = os.path.join(here, "input.jpg")
-    img = load_image_from_file(filename)
-    transformed_image = image_transform(img)
+def test_transform_function(single_test_image):
+    transformed_image = image_transform(single_test_image)
     assert isinstance(transformed_image, torch.Tensor)
 
 
