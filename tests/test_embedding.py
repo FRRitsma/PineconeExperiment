@@ -73,11 +73,9 @@ def test_transform_function(single_test_image):
     assert isinstance(transformed_image, torch.Tensor)
 
 
-def test_embedder_class():
+def test_embedder_class(single_test_image):
     embedder = Embedder()
-    filename = os.path.join(here, "input.jpg")
-    img = load_image_from_file(filename)
-    embedded_image = embedder.embed(img)
+    embedded_image = embedder.embed(single_test_image)
     assert isinstance(embedded_image, np.ndarray)
 
 
