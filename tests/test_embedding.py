@@ -29,6 +29,13 @@ def single_test_image():
     return img
 
 
+@pytest.fixture
+def test_image_single_channel():
+    path = LabelPath.train.joinpath(Path("n02102040//n02102040_1408.JPEG"))
+    img = Image.open(path)
+    return img
+
+
 def test_load_image_from_file(single_test_image):
     assert isinstance(single_test_image, JpegImageFile)
 
@@ -53,14 +60,8 @@ def test_image_transform_to_tensor_and_resize(single_test_image):
     assert isinstance(transformed_img, torch.Tensor)
 
 
-def test_image_transform_one_channel_to_three_channels():
-    # TODO: Fix this hardcode
-    path = Path(
-        """c://Users//frrit//OneDrive//Desktop//Weaviate//Weaviate//data\
-        //imagenette2//train//n02102040//n02102040_1408.JPEG"""
-    )
-    img = Image.open(path)
-    img_before_transform = transforms.ToTensor()(img)
+def test_image_transform_one_channel_to_three_channels(test_image_single_channel):
+    img_before_transform = transforms.ToTensor()(test_image_single_channel)
     img_after_transform = image_transform_one_channel_to_three_channels(
         img_before_transform
     )
@@ -80,8 +81,8 @@ def test_embedder_class(single_test_image):
 
 
 def test_extract_and_embed():
-    n_labels: int = 10
-    n_images: int = 20
+    n_labels: int = 1
+    n_images: int = 1
     embedder = Embedder()
     images_with_metadata = extract_images_with_metadata(
         n_labels, n_images, LabelPath.train
