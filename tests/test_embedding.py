@@ -1,12 +1,14 @@
 # %%
 import os
 from pathlib import Path
+from typing import Union
 
 import numpy as np
 import pytest
 import torch
 from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
+from PIL.PngImagePlugin import PngImageFile
 from torchvision import transforms
 
 from src.embedding.embedding import Embedder
@@ -37,7 +39,7 @@ def test_image_single_channel():
 
 
 def test_load_image_from_file(single_test_image):
-    assert isinstance(single_test_image, JpegImageFile)
+    assert isinstance(single_test_image, Union[JpegImageFile, PngImageFile])
 
 
 def test_image_transform_pad_to_square(single_test_image):
