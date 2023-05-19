@@ -31,7 +31,6 @@ def single_test_image():
     return img
 
 
-# THIS IS CURRENTLY INCORRECT:
 @pytest.fixture
 def test_image_single_channel():
     path = LabelPath.train.joinpath(Path("n02102040//n02102040_1408.JPEG"))
