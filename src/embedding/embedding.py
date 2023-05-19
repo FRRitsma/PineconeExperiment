@@ -10,6 +10,8 @@ from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
 from PIL.PngImagePlugin import PngImageFile
 from torchvision.models import ResNet101_Weights
 
+from src.extract.extract import ImageWithMetadata
+
 
 def load_image_from_file(image_name: str | Path) -> Union[JpegImageFile, PngImageFile]:
     """
@@ -36,9 +38,10 @@ class Embedder:
         modules = list(resnet.children())[:-1]
         self.resnet = torch.nn.Sequential(*modules)
 
-    def embed(self, img: Union[JpegImageFile, PngImageFile]) -> np.ndarray:
-        img = image_transform(img)
-        return self.resnet(img.unsqueeze(0)).flatten().detach().numpy()
+    def embed(self, image_with_metadata: ImageWithMetadata) -> np.ndarray:
+        with Image.open(image_with_metadata.image_path) as img:
+            transformed_img = image_transform(img)
+        return self.resnet(transformed_img.unsqueeze(0)).flatten().detach().numpy()
 
 
 def image_transform_pad_to_square(

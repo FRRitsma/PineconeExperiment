@@ -4,10 +4,7 @@ Loading train images bundled with their respective labels
 """
 import os
 from pathlib import Path
-from typing import Union
 
-from PIL.JpegImagePlugin import JpegImageFile
-from PIL.PngImagePlugin import PngImageFile
 
 here: Path = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent
 
@@ -18,13 +15,18 @@ class LabelPath:
 
 
 class ImageWithMetadata:
-    image: Union[JpegImageFile, PngImageFile]
     image_path: Path
     label: str
 
-    def __init__(self, image_path: Path):
+    def __init__(self, image_path: Path) -> None:
         self.image_path = image_path
         self.label = image_path.parent.name
+
+    def summary(self) -> dict[str, str]:
+        return {
+            "image_path": str(self.image_path),
+            "label": self.label,
+        }
 
 
 def select_label_directories(labels_path: Path, n_labels: int) -> list[Path]:

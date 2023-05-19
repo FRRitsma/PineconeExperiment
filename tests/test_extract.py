@@ -1,8 +1,6 @@
-from typing import Union
+from pathlib import Path
 
 import pytest
-from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
-from PIL.PngImagePlugin import PngImageFile
 
 from src.extract.extract import extract_images_with_metadata
 from src.extract.extract import ImageWithMetadata
@@ -42,7 +40,8 @@ def test_extract_images_with_metadata_list_contains_class(
 def test_image_with_metadata_class(path, collected_images_with_metadata):
     images_with_metadata = collected_images_with_metadata[path]
     image_with_metadata: ImageWithMetadata = images_with_metadata[0]
-    assert isinstance(image_with_metadata.image, Union[JpegImageFile, PngImageFile])
+    assert isinstance(image_with_metadata.label, str)
+    assert isinstance(image_with_metadata.image_path, Path)
 
 
 @pytest.mark.parametrize("path", (LabelPath.train, LabelPath.val))

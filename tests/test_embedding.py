@@ -31,6 +31,7 @@ def single_test_image():
     return img
 
 
+# THIS IS CURRENTLY INCORRECT:
 @pytest.fixture
 def test_image_single_channel():
     path = LabelPath.train.joinpath(Path("n02102040//n02102040_1408.JPEG"))
@@ -76,20 +77,14 @@ def test_transform_function(single_test_image):
     assert isinstance(transformed_image, torch.Tensor)
 
 
-def test_embedder_class(single_test_image):
-    embedder = Embedder()
-    embedded_image = embedder.embed(single_test_image)
-    assert isinstance(embedded_image, np.ndarray)
-
-
 def test_extract_and_embed():
     n_labels: int = 1
     n_images: int = 1
-    embedder = Embedder()
     images_with_metadata = extract_images_with_metadata(
         n_labels, n_images, LabelPath.train
     )
     image_with_metadata = images_with_metadata[0]
-    img = image_with_metadata.image
-    embedded_image = embedder.embed(img)
+
+    embedder = Embedder()
+    embedded_image = embedder.embed(image_with_metadata)
     assert isinstance(embedded_image, np.ndarray)
