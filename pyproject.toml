@@ -21,6 +21,7 @@ pre-commit = "^3.3.1"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.23.0"
+pytest-mock = "^3.10.0"
 
 [build-system]
 requires = ["poetry-core"]

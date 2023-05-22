@@ -1,12 +1,8 @@
 # %%
-# Part 1: Initialize database
 # Part 2: Fill database
 # Attach image link in metadata
 # Current status: Succesfull
 # Next to do: Visualization function
-from itertools import product
-
-import matplotlib.pyplot as plt
 import numpy as np
 import pinecone
 from pinecone.index import Index
@@ -16,7 +12,9 @@ from settings import ENVIRONMENT
 from settings import INDEX_NAME
 from src.embedding.embedding import Embedder
 from src.extract.extract import extract_images_with_metadata
+from src.extract.extract import ImageWithMetadata
 from src.extract.extract import LabelPath
+from src.visualization.visualization import visualize_similarities
 
 N_LABELS: int = 10
 N_IMAGES: int = 1000
@@ -24,8 +22,8 @@ N_IMAGES: int = 1000
 train_data = extract_images_with_metadata(N_LABELS, N_IMAGES, LabelPath.train)
 
 embedder = Embedder()
-
 vector_dimension = len(embedder.embed(train_data[0]))
+
 pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
 index = pinecone.Index(INDEX_NAME)
 
@@ -33,6 +31,30 @@ index = pinecone.Index(INDEX_NAME)
 def does_id_exist(id: str, index: Index) -> bool:
     id_search_result = index.fetch(ids=[id])
     return len(id_search_result["vectors"]) != 0
+
+
+# TODO: Make chunker for batch upload
+CHUNK_SIZE: int = 100
+chunk_list: list = [[] for i in range(0, len(train_data), CHUNK_SIZE)]
+
+
+def create_list_of_upload_chunks(
+    chunk_size: int, train_data: list[ImageWithMetadata]
+) -> list[dict]:
+    chunk_list: list = [[] for i in range(0, len(train_data), chunk_size)]
+    for i, image_with_metadata in enumerate(train_data):
+        chunk_list_index = int(i / chunk_size)
+        upsert_data = {
+            "id": f"vec{i}",
+            "values": embedder.embed(image_with_metadata).tolist(),
+            "metadata": image_with_metadata.summary(),
+        }
+        chunk_list[chunk_list_index].append(upsert_data)
+
+    return chunk_list
+
+
+# TODO: Create async multiple upload
 
 
 # %%
@@ -76,16 +98,6 @@ similar_vectors = fetch_similar_vectors["matches"]
 image_paths = [path["metadata"]["image_path"] for path in similar_vectors]
 
 # %%
-
-
-def visualize_similarities(square_size: int, image_path_list: list[str]) -> None:
-
-    fig, axs = plt.subplots(nrows=square_size, ncols=square_size)
-    for i, (col, row) in enumerate(product(range(square_size), range(square_size))):
-        axs[col, row].imshow(plt.imread(image_path_list[i]))
-
-    for ax in axs.flat:
-        ax.set_axis_off()
 
 
 visualize_similarities(4, image_paths)
