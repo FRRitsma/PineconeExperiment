@@ -12,7 +12,6 @@ from settings import ENVIRONMENT
 from settings import INDEX_NAME
 from src.embedding.embedding import Embedder
 from src.extract.extract import extract_images_with_metadata
-from src.extract.extract import ImageWithMetadata
 from src.extract.extract import LabelPath
 from src.visualization.visualization import visualize_similarities
 
@@ -34,27 +33,6 @@ def does_id_exist(id: str, index: Index) -> bool:
 
 
 # TODO: Make chunker for batch upload
-CHUNK_SIZE: int = 100
-chunk_list: list = [[] for i in range(0, len(train_data), CHUNK_SIZE)]
-
-
-def create_list_of_upload_chunks(
-    chunk_size: int, train_data: list[ImageWithMetadata]
-) -> list[dict]:
-    chunk_list: list = [[] for i in range(0, len(train_data), chunk_size)]
-    for i, image_with_metadata in enumerate(train_data):
-        chunk_list_index = int(i / chunk_size)
-        upsert_data = {
-            "id": f"vec{i}",
-            "values": embedder.embed(image_with_metadata).tolist(),
-            "metadata": image_with_metadata.summary(),
-        }
-        chunk_list[chunk_list_index].append(upsert_data)
-
-    return chunk_list
-
-
-# TODO: Create async multiple upload
 
 
 # %%

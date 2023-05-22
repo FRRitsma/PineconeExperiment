@@ -3,7 +3,7 @@ from itertools import chain
 import numpy as np
 import pytest
 
-from src.embedding.embedding import create_list_of_upload_chunks
+from src.database_functions.database_functions import create_list_of_upload_chunks
 from src.embedding.embedding import Embedder
 from src.extract.extract import extract_images_with_metadata
 from src.extract.extract import LabelPath
@@ -13,6 +13,7 @@ from src.extract.extract import LabelPath
 def list_of_train_data():
     N_LABELS: int = 10
     N_IMAGES: int = 1000
+
     train_data = extract_images_with_metadata(N_LABELS, N_IMAGES, LabelPath.train)
     return train_data
 
@@ -24,7 +25,9 @@ def list_of_upload_chunks(mocker, list_of_train_data):
 
     mock_embedder = mocker.Mock(spec=Embedder)
     mock_embedder.embed.return_value = np.random.rand(RESNET_EMBEDDING_SIZE)
-    mocker.patch("src.embedding.embedding.Embedder", return_value=mock_embedder)
+    mocker.patch(
+        "src.database_functions.database_functions.Embedder", return_value=mock_embedder
+    )
     upload_chunks_list = create_list_of_upload_chunks(CHUNK_SIZE, list_of_train_data)
     return upload_chunks_list
 
