@@ -20,11 +20,12 @@ def list_of_train_data():
 @pytest.fixture()
 def list_of_upload_chunks(mocker, list_of_train_data):
     RESNET_EMBEDDING_SIZE: int = 2048
+    CHUNK_SIZE: int = 100
 
     mock_embedder = mocker.Mock(spec=Embedder)
     mock_embedder.embed.return_value = np.random.rand(RESNET_EMBEDDING_SIZE)
     mocker.patch("src.embedding.embedding.Embedder", return_value=mock_embedder)
-    upload_chunks_list = create_list_of_upload_chunks(100, list_of_train_data)
+    upload_chunks_list = create_list_of_upload_chunks(CHUNK_SIZE, list_of_train_data)
     return upload_chunks_list
 
 
