@@ -77,9 +77,15 @@ image_paths = [path["metadata"]["image_path"] for path in similar_vectors]
 
 # %%
 
-fig, axs = plt.subplots(nrows=N_SQUARE_SIZE, ncols=N_SQUARE_SIZE)
-for i, (col, row) in enumerate(product(range(N_SQUARE_SIZE), range(N_SQUARE_SIZE))):
-    axs[col, row].imshow(plt.imread(image_paths[i]))
 
-for ax in axs.flat:
-    ax.set_axis_off()
+def visualize_similarities(square_size: int, image_path_list: list[str]) -> None:
+
+    fig, axs = plt.subplots(nrows=square_size, ncols=square_size)
+    for i, (col, row) in enumerate(product(range(square_size), range(square_size))):
+        axs[col, row].imshow(plt.imread(image_path_list[i]))
+
+    for ax in axs.flat:
+        ax.set_axis_off()
+
+
+visualize_similarities(4, image_paths)
