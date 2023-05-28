@@ -1,10 +1,11 @@
 name: Build Python Library using Poetry
 description: "Build and test our Python package"
 
-inputs:
-  languageVersion:
-    description: "the Python version to use"
-    required: true
+on:
+  push:
+    branches:
+      - main # Change this to the name of your main branch
+
 
 runs:
   using: composite
