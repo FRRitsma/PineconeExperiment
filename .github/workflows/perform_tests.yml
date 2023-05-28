@@ -20,9 +20,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry install
+        python -c "import pandas"
 
-    - name: Verify Panda installation
-      run: python -c "import pandas"
+    # - name: Verify Panda installation
+    #   run: python -c "import pandas"
 
     - name: Verify GPU availability
       #run: poetry shell
