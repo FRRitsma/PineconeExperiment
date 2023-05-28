@@ -19,7 +19,5 @@ jobs:
           version: "1.4.2"
       - name: Install dependencies
         run: poetry install
-      - name: Test modules
-        run: python -c "import torch; torch.cuda.is_available()"
       - name: Run tests
         run: poetry run pytest
