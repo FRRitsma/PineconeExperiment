@@ -35,7 +35,9 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install
+        run: |
+          poetry install
+          poetry run poe force-cuda
 
       - name: Run pytest tests
         run: poetry run pytest
