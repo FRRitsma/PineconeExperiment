@@ -35,3 +35,8 @@ force-cuda = "pip install torch==2.0.1+cu117 -f https://download.pytorch.org/whl
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]
