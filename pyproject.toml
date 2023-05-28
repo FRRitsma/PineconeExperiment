@@ -12,16 +12,25 @@ torch = "^2.0.1"
 torchvision = "^0.15.2"
 pandas = "^2.0.1"
 matplotlib = "^3.7.1"
-
+structlog = "^23.1.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.3.1"
 pre-commit = "^3.3.1"
 
+#[[tool.poetry.source]]
+#name = "pytorch"
+#url = "https://download.pytorch.org/whl/cu117/torch_stable.html"
+#secondary = true
+
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.23.0"
 pytest-mock = "^3.10.0"
+poethepoet = "^0.10.0"
+
+[tool.poe.tasks]
+force-cuda = "pip install torch==2.0.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html"
 
 [build-system]
 requires = ["poetry-core"]

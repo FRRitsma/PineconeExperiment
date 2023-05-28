@@ -1,0 +1,31 @@
+name: pytest
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      uses: actions/setup-poetry@v1
+      with:
+        poetry-version: 1.2.0
+        cache: 'pip'
+
+    - name: Install Dependencies
+      run: poetry install
+
+    - name: Verify GPU availability
+      run: python -c "import torch; assert torch.cuda.is_available()"
+
+    # - name: Run Tests
+    #   run: poetry run pytest

@@ -1,9 +1,14 @@
+from math import ceil
+
 import pinecone
+import structlog
 
 from settings import API_KEY
 from settings import ENVIRONMENT
 from src.embedding.embedding import Embedder
 from src.extract.extract import ImageWithMetadata
+
+logger = structlog.get_logger(__name__)
 
 pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
 
@@ -34,5 +39,17 @@ def create_list_of_upload_chunks(
             "metadata": image_with_metadata.summary(),
         }
         chunk_list[chunk_list_index].append(upsert_data)
+        if i % chunk_size == 0:
+            logger.info(f"Chunk {chunk_list_index}/{ceil(len(train_data)/chunk_size)}")
+    logger.info("Chunking has completed")
 
     return chunk_list
+
+
+def upsert_batches(chunk_list: list[list], index_name: str) -> list:
+    with pinecone.Index(index_name, pool_threads=30) as index:
+        async_results = [
+            index.upsert(vectors=chunk, async_req=True) for chunk in chunk_list
+        ]
+        results = [async_result.get() for async_result in async_results]
+    return results

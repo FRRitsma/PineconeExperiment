@@ -1,26 +1,46 @@
 # %%
-# Part 2: Fill database
-# Attach image link in metadata
-# Current status: Succesfull
-# Next to do: Visualization function
+import time
+
 import numpy as np
 import pinecone
+import torch
 from pinecone.index import Index
 
 from settings import API_KEY
 from settings import ENVIRONMENT
 from settings import INDEX_NAME
+from src.database_functions.database_functions import create_list_of_upload_chunks
 from src.embedding.embedding import Embedder
 from src.extract.extract import extract_images_with_metadata
 from src.extract.extract import LabelPath
 from src.visualization.visualization import visualize_similarities
 
+embedder = Embedder()
+device = torch.device("cuda")
+
+
+# %%
+
 N_LABELS: int = 10
-N_IMAGES: int = 1000
+N_IMAGES: int = 50
 
 train_data = extract_images_with_metadata(N_LABELS, N_IMAGES, LabelPath.train)
+chunk_list = create_list_of_upload_chunks(35, train_data)
+
+# %%
+
 
 embedder = Embedder()
+# device = torch.device("cuda")
+# embedder.resnet.to(device)
+
+t0 = time.time()
+for i in range(10):
+    embedder.embed(train_data[0])
+t1 = time.time()
+print(t1 - t0)
+# %%
+
 vector_dimension = len(embedder.embed(train_data[0]))
 
 pinecone.init(api_key=API_KEY, environment=ENVIRONMENT)
@@ -32,22 +52,14 @@ def does_id_exist(id: str, index: Index) -> bool:
     return len(id_search_result["vectors"]) != 0
 
 
-# TODO: Make chunker for batch upload
+def upsert_batches(chunk_list) -> list:
+    with pinecone.Index(INDEX_NAME, pool_threads=30) as index:
+        async_results = [
+            index.upsert(vectors=chunk, async_req=True) for chunk in chunk_list
+        ]
+        results = [async_result.get() for async_result in async_results]
+    return results
 
-
-# %%
-for i, image_with_metadata in enumerate(train_data):
-    vector_id = f"vec{i}"
-    if not does_id_exist(vector_id, index):
-        upsert_response = index.upsert(
-            vectors=[
-                {
-                    "id": vector_id,
-                    "values": embedder.embed(image_with_metadata).tolist(),
-                    "metadata": image_with_metadata.summary(),
-                }
-            ],
-        )
 
 # %%
 # Creating visualization functions
@@ -74,8 +86,5 @@ fetch_similar_vectors = index.query(
 similar_vectors = fetch_similar_vectors["matches"]
 # vector_list = fetch_response['vectors']
 image_paths = [path["metadata"]["image_path"] for path in similar_vectors]
-
-# %%
-
 
 visualize_similarities(4, image_paths)

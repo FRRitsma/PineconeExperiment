@@ -34,14 +34,19 @@ class Embedder:
     """
 
     def __init__(self):
-        resnet = models.resnet101(weights=ResNet101_Weights.DEFAULT)
+        self.device = (
+            torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+        )
+        resnet = models.resnet101(weights=ResNet101_Weights.DEFAULT).to(self.device)
         modules = list(resnet.children())[:-1]
         self.resnet = torch.nn.Sequential(*modules)
 
     def embed(self, image_with_metadata: ImageWithMetadata) -> np.ndarray:
         with Image.open(image_with_metadata.image_path) as img:
-            transformed_img = image_transform(img)
-        return self.resnet(transformed_img.unsqueeze(0)).flatten().detach().numpy()
+            transformed_img = image_transform(img).to(self.device)
+        return (
+            self.resnet(transformed_img.unsqueeze(0)).flatten().detach().cpu().numpy()
+        )
 
 
 def image_transform_pad_to_square(
