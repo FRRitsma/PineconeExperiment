@@ -23,7 +23,9 @@ jobs:
         run: |
           poetry config virtualenvs.in-project true
           poetry install
+      - name: Activate environment
+        shell: powershell
+        run: .venv//Scripts//activate.ps1
       - name: Run tests
         run: |
-          .venv//Scripts//activate.ps1
           python -m pytest
