@@ -21,11 +21,11 @@ jobs:
           version: "1.4.2"
       - name: Install dependencies
         run: |
-          poetry config virtualenvs.in-project true
+          # poetry config virtualenvs.in-project true
           poetry install
-      - name: Activate environment
-        shell: powershell
-        run: .venv\Scripts\activate.ps1
+      # - name: Activate environment
+      #   shell: powershell
+      #   run: .venv\Scripts\activate.ps1
       - name: Run tests
         run: |
-          python -m pytest
+          poetry run pytest
