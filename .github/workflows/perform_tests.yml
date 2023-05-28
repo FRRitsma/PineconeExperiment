@@ -20,7 +20,7 @@ jobs:
         with:
           version: "1.4.2"
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --sync
       - name: Run tests
         run: |
           python -m pytest
