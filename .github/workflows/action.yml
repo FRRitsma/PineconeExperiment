@@ -1,53 +1,38 @@
-name: Build Python Library using Poetry
-description: "Build and test our Python package"
+name: Run Pytest with Poetry
 
 on:
   push:
-    branches:
-      - main # Change this to the name of your main branch
+    branches: [main]
+  pull_request:
 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-runs:
-  using: composite
-  steps:
-    - uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
 
-    - name: Install Poetry
-      shell: bash
-      run: make install_poetry
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.0.0
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-    - uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-        cache: 'poetry' # caching poetry dependencies
+      - name: Cache Poetry virtualenv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
-    - name: Install project
-      shell: bash
-      run: make install
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install
 
-    - name: Create artifacts directory
-      shell: bash
-      run: mkdir -p artifacts
-
-    # - name: Configure AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@master
-    #   with:
-    #     role-to-assume: ${{ env.AWS_ROLE }}
-    #     aws-region: eu-central-1
-
-    - name: Run test
-      shell: bash
-      run: make test
-
-    # - name: Build Docker image
-    #   shell: bash
-    #   run: make docker-build
-
-    # - name: Temporarily save Docker image
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: docker-artifact
-    #     path: artifacts/docker_images
-    #     retention-days: 1
+      - name: Run pytest tests
+        run: poetry run pytest
