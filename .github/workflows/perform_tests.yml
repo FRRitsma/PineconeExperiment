@@ -25,7 +25,7 @@ jobs:
           poetry install
       - name: Activate environment
         shell: powershell
-        run: .venv//Scripts//activate.ps1
+        run: .venv\Scripts\activate.ps1
       - name: Run tests
         run: |
           python -m pytest
