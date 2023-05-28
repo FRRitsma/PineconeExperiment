@@ -25,5 +25,5 @@ jobs:
           poetry install
       - name: Run tests
         run: |
-          .venv\Scripts\activate.ps1
+          .venv//Scripts//activate.ps1
           python -m pytest
