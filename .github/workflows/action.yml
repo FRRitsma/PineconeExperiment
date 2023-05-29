@@ -22,8 +22,6 @@ jobs:
         with:
           version: 1.4.2
           virtualenvs-create: true
-          # virtualenvs-in-project: false
-          # virtualenvs-path: ~/my-custom-path
           installer-parallel: true
 
       - name: Cache Poetry virtualenv
@@ -40,4 +38,4 @@ jobs:
           poetry run poe force-cuda
 
       - name: Run pytest tests
-        run: poetry run pytest
+        run: poetry run pytest -m "not local"

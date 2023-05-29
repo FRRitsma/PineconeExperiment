@@ -21,6 +21,7 @@ def test_difference_between_train_and_val_path():
     assert LabelPath.train != LabelPath.val
 
 
+@pytest.mark.local
 @pytest.mark.parametrize("path", ["train", "val"])
 def test_extract_images_with_metadata_returns_list(
     path, collected_images_with_metadata
@@ -28,6 +29,7 @@ def test_extract_images_with_metadata_returns_list(
     assert isinstance(collected_images_with_metadata[path], list)
 
 
+@pytest.mark.local
 @pytest.mark.parametrize("path", ["train", "val"])
 def test_extract_images_with_metadata_list_contains_class(
     path, collected_images_with_metadata
@@ -36,6 +38,7 @@ def test_extract_images_with_metadata_list_contains_class(
     assert isinstance(images_with_metadata[0], ImageWithMetadata)
 
 
+@pytest.mark.local
 @pytest.mark.parametrize("path", ["train", "val"])
 def test_image_with_metadata_class(path, collected_images_with_metadata):
     images_with_metadata = collected_images_with_metadata[path]
@@ -44,6 +47,7 @@ def test_image_with_metadata_class(path, collected_images_with_metadata):
     assert isinstance(image_with_metadata.image_path, Path)
 
 
+@pytest.mark.local
 @pytest.mark.parametrize("path", (LabelPath.train, LabelPath.val))
 def test_extract_images_with_metadata_list_correct_length(path):
     n_labels: int = 5
@@ -52,6 +56,7 @@ def test_extract_images_with_metadata_list_correct_length(path):
     assert len(images_with_metadata) == n_labels * n_images
 
 
+@pytest.mark.local
 @pytest.mark.parametrize("path", (LabelPath.train, LabelPath.val))
 def test_extract_images_with_metadata_list_correct_length_for_more_labels_than_exist(
     path,
@@ -62,6 +67,7 @@ def test_extract_images_with_metadata_list_correct_length_for_more_labels_than_e
     assert len(images_with_metadata) == 10 * n_images
 
 
+@pytest.mark.local
 @pytest.mark.parametrize("path", (LabelPath.train, LabelPath.val))
 def test_extract_images_with_metadata_list_correct_length_for_more_images_than_exist(
     path,

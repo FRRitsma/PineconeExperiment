@@ -32,11 +32,13 @@ def list_of_upload_chunks(mocker, list_of_train_data):
     return upload_chunks_list
 
 
+@pytest.mark.local
 def test_chunk_function_total_data_count(list_of_upload_chunks, list_of_train_data):
     flat_list = list(chain.from_iterable(list_of_upload_chunks))
     assert len(flat_list) == len(list_of_train_data)
 
 
+@pytest.mark.local
 def test_chunk_function_every_id_is_unique(list_of_upload_chunks, list_of_train_data):
     flat_list = list(chain.from_iterable(list_of_upload_chunks))
     all_index_names = [i["id"] for i in flat_list]
