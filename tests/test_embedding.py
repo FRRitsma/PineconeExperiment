@@ -53,6 +53,7 @@ def test_image_transform_pad_to_square(single_test_image):
     )
 
 
+@pytest.mark.local
 def test_image_transform_to_tensor_and_resize(single_test_image):
     RESIZE: int = 400
     transformed_img = image_transform_to_tensor_and_resize(single_test_image, RESIZE)
