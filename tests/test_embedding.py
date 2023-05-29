@@ -53,7 +53,6 @@ def test_image_transform_pad_to_square(single_test_image):
     )
 
 
-@pytest.mark.local
 def test_image_transform_to_tensor_and_resize(single_test_image):
     RESIZE: int = 400
     transformed_img = image_transform_to_tensor_and_resize(single_test_image, RESIZE)
@@ -62,6 +61,7 @@ def test_image_transform_to_tensor_and_resize(single_test_image):
     assert isinstance(transformed_img, torch.Tensor)
 
 
+@pytest.mark.local
 def test_image_transform_one_channel_to_three_channels(test_image_single_channel):
     img_before_transform = transforms.ToTensor()(test_image_single_channel)
     img_after_transform = image_transform_one_channel_to_three_channels(
