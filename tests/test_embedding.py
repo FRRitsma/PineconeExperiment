@@ -76,6 +76,7 @@ def test_transform_function(single_test_image):
     assert isinstance(transformed_image, torch.Tensor)
 
 
+@pytest.mark.local
 def test_extract_and_embed():
     n_labels: int = 1
     n_images: int = 1
