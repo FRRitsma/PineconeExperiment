@@ -37,6 +37,10 @@ def test_image_single_channel():
     return img
 
 
+def test_is_cuda_available():
+    assert torch.cuda.is_available()
+
+
 def test_load_image_from_file(single_test_image):
     assert isinstance(single_test_image, Union[JpegImageFile, PngImageFile])
 
