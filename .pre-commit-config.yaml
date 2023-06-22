@@ -1,22 +1,17 @@
 repos:
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.910
+    rev: v1.3.0
     hooks:
     -   id: mypy
-        args: [--ignore-missing-imports]
+        args: [--ignore-missing-imports, --check-untyped-defs]
 
 -   repo: https://github.com/pycqa/flake8
-    rev: 5.0.4
+    rev: 6.0.0
     hooks:
     -   id: flake8
 
--   repo: https://github.com/psf/black
-    rev: 22.3.0
-    hooks:
-    -   id: black
-
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.4.0
     hooks:
     -   id: check-yaml
     -   id: end-of-file-fixer
@@ -34,39 +29,18 @@ repos:
     -   id: check-docstring-first
     -   id: check-toml
 
-# Conflicts with autopep8:
-# -   repo: https://github.com/PyCQA/isort
-#     rev: 5.11.5
-#     hooks:
-#     -   id: isort
-
 -   repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v1.5.7
+    rev: v2.0.2
     hooks:
     -   id: autopep8
         args: [--in-place, --aggressive, --aggressive, --max-line-length=120]
 
-# Broken hook:
-# -   repo: https://github.com/htacg/tidy-html5
-#     rev: master
-#     hooks:
-#     -   id: tidy
-
 -   repo: https://github.com/asottile/reorder-python-imports
-    rev: v2.6.0
+    rev: v3.9.0
     hooks:
     -   id: reorder-python-imports
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v2.7.2
+    rev: v3.4.0
     hooks:
     -   id: pyupgrade
         args: [--py36-plus]
-
-# -   repo: local
-#     hooks:
-#     -   id: pytest
-#         name: pytest
-#         entry: python -m pytest
-#         language: system
-#         pass_filenames: false
-#         always_run: true

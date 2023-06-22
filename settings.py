@@ -1,4 +1,19 @@
-API_KEY: str = "ae0bb7c3-fa52-4b41-9ce2-fdb0e701f080"
+import os
+
+from src.download_dataset import FileSize
+
+API_KEY = os.getenv("API_KEY")
 ENVIRONMENT: str = "us-west4-gcp"
 INDEX_NAME: str = "first-index"
-DIMENSION: int = 8
+
+
+class DownloadSettings(enumerate):
+    large_size: FileSize = FileSize(
+        "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2.tgz"
+    )
+    medium_size: FileSize = FileSize(
+        "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-320.tgz"
+    )
+    small_size: FileSize = FileSize(
+        "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz"
+    )

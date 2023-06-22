@@ -6,12 +6,12 @@ import os
 from pathlib import Path
 
 
-here: Path = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent
+directory_root: Path = Path(__file__).parent.parent
 
 
 class LabelPath:
-    train: Path = Path.joinpath(here, "data", "imagenette2", "train")
-    val: Path = Path.joinpath(here, "data", "imagenette2", "val")
+    train: Path = directory_root / "data" / "imagenette2-160" / "train"
+    val: Path = directory_root / "data" / "imagenette2-160" / "val"
 
 
 class ImageWithMetadata:
@@ -30,12 +30,13 @@ class ImageWithMetadata:
 
 
 def select_label_directories(labels_path: Path, n_labels: int) -> list[Path]:
-    all_label_directories: list[str] = os.listdir(labels_path)
-    selected_label_directories: list[str] = all_label_directories[:n_labels]
-    selected_label_directories_full_path = [
-        Path.joinpath(labels_path, i) for i in selected_label_directories
-    ]
-    return selected_label_directories_full_path
+    if n_labels < 1:
+        return []
+    all_label_directories: list[Path] = list(
+        path for path in labels_path.iterdir() if path.is_dir()
+    )
+    selected_label_directories: list[Path] = all_label_directories[:n_labels]
+    return selected_label_directories
 
 
 def select_images(label_directories: list, n_images: int) -> list[Path]:

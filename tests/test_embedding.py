@@ -1,6 +1,4 @@
-import os
 from pathlib import Path
-from typing import Union
 
 import numpy as np
 import pytest
@@ -10,29 +8,29 @@ from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
 from PIL.PngImagePlugin import PngImageFile
 from torchvision import transforms
 
-from src.embedding.embedding import Embedder
-from src.embedding.embedding import image_transform
-from src.embedding.embedding import image_transform_one_channel_to_three_channels
-from src.embedding.embedding import image_transform_pad_to_square
-from src.embedding.embedding import image_transform_to_tensor_and_resize
-from src.embedding.embedding import load_image_from_file
-from src.extract.extract import extract_images_with_metadata
-from src.extract.extract import LabelPath
+from src.embedding import Embedder
+from src.embedding import image_transform
+from src.embedding import image_transform_one_channel_to_three_channels
+from src.embedding import image_transform_pad_to_square
+from src.embedding import image_transform_to_tensor_and_resize
+from src.embedding import load_image_from_file
+from src.extract import extract_images_with_metadata
+from src.extract import LabelPath
 
 # This is needed to load files in the directory correctly:
-here = os.path.dirname(os.path.abspath(__file__))
+here = Path(__file__).parent
 
 
 @pytest.fixture
 def single_test_image():
-    filename = os.path.join(here, "input.jpg")
+    filename = here / "input.jpg"
     img = load_image_from_file(filename)
     return img
 
 
 @pytest.fixture
 def test_image_single_channel():
-    path = LabelPath.train.joinpath(Path("n02102040//n02102040_1408.JPEG"))
+    path = LabelPath.train / "n02102040" / "n02102040_1408.JPEG"
     img = Image.open(path)
     return img
 
@@ -42,7 +40,7 @@ def test_is_cuda_available():
 
 
 def test_load_image_from_file(single_test_image):
-    assert isinstance(single_test_image, Union[JpegImageFile, PngImageFile])
+    assert isinstance(single_test_image, JpegImageFile) or isinstance(single_test_image, PngImageFile)
 
 
 def test_image_transform_pad_to_square(single_test_image):
@@ -65,7 +63,6 @@ def test_image_transform_to_tensor_and_resize(single_test_image):
     assert isinstance(transformed_img, torch.Tensor)
 
 
-@pytest.mark.local
 def test_image_transform_one_channel_to_three_channels(test_image_single_channel):
     img_before_transform = transforms.ToTensor()(test_image_single_channel)
     img_after_transform = image_transform_one_channel_to_three_channels(
@@ -80,7 +77,6 @@ def test_transform_function(single_test_image):
     assert isinstance(transformed_image, torch.Tensor)
 
 
-@pytest.mark.local
 def test_extract_and_embed():
     n_labels: int = 1
     n_images: int = 1

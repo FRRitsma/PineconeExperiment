@@ -10,19 +10,10 @@ from PIL.JpegImagePlugin import JpegImageFile as JpegImageFile
 from PIL.PngImagePlugin import PngImageFile
 from torchvision.models import ResNet101_Weights
 
-from src.extract.extract import ImageWithMetadata
+from src.extract import ImageWithMetadata
 
 
 def load_image_from_file(image_name: str | Path) -> Union[JpegImageFile, PngImageFile]:
-    """
-    Returns a locally stored image as a PIL image
-
-    Args:
-        image_name (str | Path):
-
-    Returns:
-        JpegImageFile:
-    """
     img = Image.open(image_name)
     return img
 
@@ -32,6 +23,8 @@ class Embedder:
     For embedding a PIL image as a torch.Tensor.
     Implemented as class to prevent continuous reloading of the sizeable resnet model
     """
+
+    embedding_dimension: int = 2048
 
     def __init__(self):
         self.device = (
