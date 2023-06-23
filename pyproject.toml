@@ -21,10 +21,6 @@ mypy = "^1.4.0"
 pytest = "^7.3.1"
 pre-commit = "^3.3.1"
 pytest-cov = "^4.1.0"
-
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.23.0"
 pytest-mock = "^3.10.0"
 poethepoet = "^0.10.0"
 

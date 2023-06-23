@@ -13,4 +13,4 @@ def visualize_similarities(square_size: int, image_path_list: list[Path]) -> Non
     for ax in axs.flat:
         ax.set_axis_off()
     fig.suptitle("An original picture and its neighbours")
-    fig.show()
+    plt.show(block=True)
