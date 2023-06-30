@@ -36,7 +36,9 @@ def test_image_single_channel():
 
 
 def test_is_cuda_available():
-    assert torch.cuda.is_available()
+    assert torch.cuda.is_available(
+    ), "Cuda is not available. Note that if you work in a poetry environment\
+     you can install cuda with the commmand 'poe force-cuda'"
 
 
 def test_load_image_from_file(single_test_image):
