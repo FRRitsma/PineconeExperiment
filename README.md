@@ -1,3 +1,3 @@
 # Pinecone Blog
 
-Experimentation with the pinecone database, confusingly. Should change name of repository
+Experimentation with the pinecone database
