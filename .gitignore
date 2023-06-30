@@ -19,6 +19,7 @@ egg-info/
 # IDE-specific files
 .vscode/
 *.code-workspace
+.idea/
 
 # Environment variable files
 .env
