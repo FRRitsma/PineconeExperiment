@@ -10,7 +10,9 @@ Instructions:
  
  3 - Create a .env file 
  
- 4 - API_KEY=<your api key>
+ 4 - Edit the .env file to include:
+     
+     API_KEY=<your api key>
  
  5 - Run main.py using: 
  
